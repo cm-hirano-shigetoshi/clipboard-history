@@ -1,0 +1,13 @@
+base_task:
+  input: /usr/local/opt/coreutils/libexec/gnubin/tac $arg1
+          | awk '!a[$0]++'
+          | grep -v '^\s*$'
+  preview: echo {} | bash $(dirname ${yml})/preview.sh
+  opts:
+    - preview-window='wrap'
+expects:
+  enter:
+    pipe: awk 'BEGIN{print "clipboard"} {print}'
+  alt-e:
+    pipe: awk 'BEGIN{print "edit"} {print}'
+
