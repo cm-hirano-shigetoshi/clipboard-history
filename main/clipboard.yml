@@ -8,6 +8,6 @@ base_task:
 expects:
   enter:
     pipe: awk 'BEGIN{print "clipboard"} {print}'
-  alt-e:
+  alt-enter:
     pipe: awk 'BEGIN{print "edit"} {print}'
 
