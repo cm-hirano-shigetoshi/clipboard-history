@@ -5,6 +5,7 @@ base_task:
   preview: echo {} | bash $(dirname ${yml})/preview.sh
   opts:
     - preview-window='wrap'
+    - multi
 expects:
   enter:
     pipe: awk 'BEGIN{print "clipboard"} {print}'
