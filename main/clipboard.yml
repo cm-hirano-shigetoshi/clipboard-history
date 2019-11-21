@@ -1,15 +1,15 @@
 base_task:
-  input: /usr/local/opt/coreutils/libexec/gnubin/tac $arg1
+  input: /usr/local/opt/coreutils/libexec/gnubin/tac {arg1}
           | awk '!a[$0]++'
           | grep -v '^\s*$'
-  preview: echo {} | bash $(dirname ${yml})/preview.sh
+  preview: echo {} | bash {ymldir}/preview.sh
   opts:
     - preview-window='wrap'
     - multi
     - no-sort
-expects:
-  enter:
-    pipe: awk 'BEGIN{print "clipboard"} {print}'
-  alt-enter:
-    pipe: awk 'BEGIN{print "edit"} {print}'
+  stdout:
+    enter:
+        - pipe: awk 'BEGIN{print "clipboard"} {print}'
+    alt-enter:
+        - pipe: awk 'BEGIN{print "edit"} {print}'
 
