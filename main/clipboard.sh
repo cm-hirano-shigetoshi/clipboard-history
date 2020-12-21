@@ -1,8 +1,7 @@
-export PATH="~/local/bin:${PATH}"
 readonly CLIPBOARD_HISTORY_FILE="${HOME}/.clipboard_history"
 readonly TOOL_DIR="$(dirname $(perl -MCwd=realpath -le 'print realpath shift' "$0"))"
-echo $TOOL_DIR >> ~/.debug
-result=$(fzfyml run ${TOOL_DIR}/clipboard.yml "$CLIPBOARD_HISTORY_FILE")
+
+result=$(fzfyml3 run ${TOOL_DIR}/clipboard.yml "$CLIPBOARD_HISTORY_FILE")
 if [[ -n "${result}" ]]; then
   type=$(head -1 <<< "${result}")
   if [[ "${type}" = "clipboard" ]]; then
