@@ -1,24 +1,16 @@
-readonly CLIPBOARD_HISTORY_FILE="${HOME}/.clipboard_history"
 readonly TOOL_DIR="$(dirname $(perl -MCwd=realpath -le 'print realpath shift' "$0"))"
+readonly CLIPBOARD_FILE="${HOME}/.clipboard_history"
+readonly CLIPBOARD_RAW_FILE="${HOME}/.clipboard_history.raw"
 
-result=$(fzfyml3 run ${TOOL_DIR}/clipboard.yml "$CLIPBOARD_HISTORY_FILE")
-if [[ -n "${result}" ]]; then
-  type=$(head -1 <<< "${result}")
-  if [[ "${type}" = "clipboard" ]]; then
-    sed '1d' <<< "${result}" \
-      | tr '' '\n' \
-      | perl ${TOOL_DIR}/del_newline.pl \
-      | pbcopy
-  elif [[ "${type}" = "edit" ]]; then
-    temp_file=$(mktemp "/tmp/clipboard_history.XXXXXX")
-    sed '1d' <<< "${result}" \
-      | tr '' '\n' \
-      | perl ${TOOL_DIR}/del_newline.pl \
-      > ${temp_file}
-    ${EDITOR-vim} ${temp_file}
-    if [[ -s ${temp_file} ]]; then
-      cat ${temp_file} | pbcopy
-    fi
-  fi
+selected=$(tac "${CLIPBOARD_RAW_FILE}" | \
+            grep -v '^\s*$' | \
+            awk '!a[$0]++' | \
+            tee "${CLIPBOARD_FILE}" | \
+            fzf \
+              --multi \
+              --bind "alt-enter:execute-silent(tmux new-window bash '${TOOL_DIR}/open_vim.sh' {+})" |\
+            tr '' '\n')
+if [[ -n "${selected}" ]]; then
+    echo "${selected}" | perl -pe 'chomp if eof' | pbcopy
 fi
 
