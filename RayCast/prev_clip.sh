@@ -47,10 +47,9 @@ function increment_index {
 prepare_cache
 index=$(get_prev_index)
 if [[ $index -gt $CASHE_N ]]; then
-    echo "⚠️"
-else
-    text=$(get_text $index)
-    echo "$index: $text" | cut -c -400
-    echo $text | perl -pe 'chomp if eof' | tr '' '\n' | pbcopy
-    increment_index $index
+    index=$CASHE_N
 fi
+text=$(get_text $index)
+echo "$index: $text" | cut -c -400
+echo $text | perl -pe 'chomp if eof' | tr '' '\n' | pbcopy
+increment_index $index

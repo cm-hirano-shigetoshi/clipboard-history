@@ -47,10 +47,9 @@ function decrement_index {
 prepare_cache
 index=$(get_next_index)
 if [[ $index -le 0 ]]; then
-    echo "⚠️"
-else
-    text=$(get_text $index)
-    echo "$index: $text" | cut -c -400
-    echo $text | perl -pe 'chomp if eof' | tr '' '\n' | pbcopy
-    decrement_index $index
+    index=1
 fi
+text=$(get_text $index)
+echo "$index: $text" | cut -c -400
+echo $text | perl -pe 'chomp if eof' | tr '' '\n' | pbcopy
+decrement_index $index
