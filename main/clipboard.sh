@@ -8,6 +8,7 @@ selected=$(tac "${CLIPBOARD_RAW_FILE}" | \
             tee "${CLIPBOARD_FILE}" | \
             fzf \
               --multi \
+              --no-sort \
               --bind "alt-enter:execute-silent(tmux new-window bash '${TOOL_DIR}/open_vim.sh' {+})" |\
             tr '' '\n')
 if [[ -n "${selected}" ]]; then
