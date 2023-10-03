@@ -11,7 +11,7 @@ selected=$(tac "${CLIPBOARD_RAW_FILE}" | \
               --no-sort \
               --preview "echo {} | tr '' '\n' | bat --color always --plain -n -l python" \
               --preview-window "wrap:65%" \
-              --bind "alt-enter:execute-silent(tmux new-window bash '${TOOL_DIR}/open_vim.sh' {+})" |\
+              --bind "alt-e:execute-silent(tmux new-window bash '${TOOL_DIR}/open_vim.sh' {+})" |\
             tr '' '\n')
 if [[ -n "${selected}" ]]; then
     echo "${selected}" | perl -pe 'chomp if eof' | pbcopy
