@@ -9,11 +9,22 @@ selected=$(tac "${CLIPBOARD_RAW_FILE}" | \
             fzf \
               --multi \
               --no-sort \
+              --expect "enter,alt-enter" \
               --preview "echo {} | tr '' '\n' | bat --color always --plain -n -l python" \
               --preview-window "wrap:65%" \
-              --bind "alt-e:execute-silent(tmux new-window bash '${TOOL_DIR}/open_vim.sh' {+})" |\
-            tr '' '\n')
+          )
 if [[ -n "${selected}" ]]; then
-    echo "${selected}" | perl -pe 'chomp if eof' | pbcopy
+    header="$(head -1 <<< "${selected}")"
+    content="$(sed 1d <<< "${selected}" | tr '' '\n')"
+    if [[ "${header}" = "alt-enter" ]]; then
+        tmpdir=$(mktemp -d)
+        echo "${content}" > "$tmpdir/selected"
+        vim "$tmpdir/selected"
+        if [[ -s "$tmpdir/selected" ]]; then
+            cat "$tmpdir/selected" | perl -pe 'chomp if eof' | pbcopy
+        fi
+    else
+        echo "${content}" | perl -pe 'chomp if eof' | pbcopy
+    fi
 fi
 
