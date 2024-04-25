@@ -1,4 +1,5 @@
-CLIPBOARD_RAW_FILE=${HOME}/.clipboard_history.raw
+CLIPBOARD_RAW_FILE="${HOME}/.local/share/clipboard/history.raw"
+mkdir -p "$(dirname ${CLIPBOARD_RAW_FILE})"
 
 export LANG=ja_JP.UTF-8
 latest=""

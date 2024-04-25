@@ -11,37 +11,37 @@
 # Documentation:
 # @raycast.description post to slack
 
-CLIPBOARD_HISTORY_FIILE="$HOME/.clipboard_history"
-CLIPBOARD_RAW_FIILE="$CLIPBOARD_HISTORY_FIILE.raw"
-CLIPBOARD_CASHE_FIILE="$CLIPBOARD_HISTORY_FIILE.cache"
+CLIPBOARD_FILE="${HOME}/.local/share/clipboard/history"
+CLIPBOARD_RAW_FILE="${HOME}/.local/share/clipboard/history.raw"
+CLIPBOARD_CASHE_FILE="${HOME}/.local/share/clipboard/history.cache"
 
 VOLATTILITY_SECONDS=10
 CASHE_N=100
 
 function prepare_cache {
     now=$(date +%s)
-    cache_ts=$(/usr/bin/stat -f"%m" "${CLIPBOARD_CASHE_FIILE}" 2>/dev/null)
+    cache_ts=$(/usr/bin/stat -f"%m" "${CLIPBOARD_CASHE_FILE}" 2>/dev/null)
     diff=$((now - cache_ts))
     if [[ $diff -gt $VOLATTILITY_SECONDS ]]; then
-        tac ${CLIPBOARD_RAW_FIILE} | awk '!a[$0]++' | grep -v '^$' | head -${CASHE_N} > ${CLIPBOARD_CASHE_FIILE}
-        echo '1' >> ${CLIPBOARD_CASHE_FIILE}
+        tac ${CLIPBOARD_RAW_FILE} | awk '!a[$0]++' | grep -v '^$' | head -${CASHE_N} > ${CLIPBOARD_CASHE_FILE}
+        echo '1' >> ${CLIPBOARD_CASHE_FILE}
     fi
 }
 
 function get_next_index {
-    index=$(tail -1 ${CLIPBOARD_CASHE_FIILE})
+    index=$(tail -1 ${CLIPBOARD_CASHE_FILE})
     echo $((index - 1))
 }
 
 function get_text {
     index=$1
-    head -$index ${CLIPBOARD_CASHE_FIILE} | tail -1
+    head -$index ${CLIPBOARD_CASHE_FILE} | tail -1
 }
 
 function decrement_index {
     index=$1
-    texts=$(sed '$d' ${CLIPBOARD_CASHE_FIILE})
-    { echo "$texts"; echo "$index"; } > ${CLIPBOARD_CASHE_FIILE}
+    texts=$(sed '$d' ${CLIPBOARD_CASHE_FILE})
+    { echo "$texts"; echo "$index"; } > ${CLIPBOARD_CASHE_FILE}
 }
 
 prepare_cache
