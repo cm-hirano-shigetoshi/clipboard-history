@@ -23,7 +23,7 @@ if [[ -n "${selected}" ]]; then
     if [[ "${header}" = "alt-enter" ]]; then
         tmpdir=$(mktemp -d)
         echo "${content}" > "$tmpdir/selected"
-        vim "$tmpdir/selected"
+        $EDITOR "$tmpdir/selected"
         if [[ -s "$tmpdir/selected" ]]; then
             cat "$tmpdir/selected" | perl -pe 'chomp if eof' | pbcopy
         fi
