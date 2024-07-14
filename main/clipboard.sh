@@ -23,7 +23,7 @@ if [[ -n "${selected}" ]]; then
     header="$(head -1 <<< "${selected}")"
     content="$(sed 1d <<< "${selected}" | tr '' '\n')"
     if [[ "${header}" = "alt-enter" ]]; then
-        echo "${content}" > "$tmpdir/selected"
+        echo "${content}" > "$tmpdir/edit"
     else
         echo "${content}" | perl -pe 'chomp if eof' | pbcopy
     fi
