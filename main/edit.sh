@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-tmpdir="$1"
-"${EDITOR-vim}" "$tmpdir/selected"
-if [[ -s "$tmpdir/selected" ]]; then
-    cat "$tmpdir/selected" | perl -pe 'chomp if eof' | pbcopy
+"${EDITOR-vim}" "$1"
+if [[ -s "$1" ]]; then
+    cat "$1" | perl -pe 'chomp if eof' | pbcopy
 fi

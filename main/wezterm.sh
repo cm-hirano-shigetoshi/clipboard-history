@@ -25,6 +25,6 @@ open "${WEZTERM_APP}"
 
 timeout $EDITOR_WAIT_SECOND cat "$tmpdir/done" >/dev/null
 if [[ -e "$tmpdir/edit" ]]; then
-    wezterm_run_shell "${EDITOR-vim}" "$tmpdir/edit"
+    wezterm_run_shell "${TOOL_DIR}/edit.sh" "$tmpdir/edit"
 fi
 
