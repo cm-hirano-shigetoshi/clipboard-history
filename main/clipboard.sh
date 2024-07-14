@@ -4,6 +4,8 @@ readonly CLIPBOARD_RAW_FILE="${HOME}/.local/share/clipboard/history.raw"
 
 export BAT_THEME="Dracula"
 
+tmpdir="$1"
+
 selected=$(tac "${CLIPBOARD_RAW_FILE}" | \
             grep -v '^\s*$' | \
             awk '!a[$0]++' | \
@@ -21,11 +23,11 @@ if [[ -n "${selected}" ]]; then
     header="$(head -1 <<< "${selected}")"
     content="$(sed 1d <<< "${selected}" | tr '' '\n')"
     if [[ "${header}" = "alt-enter" ]]; then
-        tmpdir=$(mktemp -d)
         echo "${content}" > "$tmpdir/selected"
-        $HOME/bin/main/execute-on-wezterm "bash ${TOOL_DIR}/edit.sh '${tmpdir}'"
     else
         echo "${content}" | perl -pe 'chomp if eof' | pbcopy
     fi
 fi
+
+date > "$tmpdir/done"
 
