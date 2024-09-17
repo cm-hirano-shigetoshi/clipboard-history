@@ -51,5 +51,5 @@ if [[ $index -le 0 ]]; then
 fi
 text=$(get_text $index)
 echo "$index: $text" | cut -c -400
-echo $text | perl -pe 'chomp if eof' | tr '' '\n' | pbcopy
+echo "$text" | perl -pe 'chomp if eof' | tr '' '\n' | pbcopy
 decrement_index $index
