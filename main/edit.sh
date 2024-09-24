@@ -1,7 +1,13 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -eu
 
-"${EDITOR-vim}" "$1"
-if [[ -s "$1" ]]; then
-    cat "$1" | perl -pe 'chomp if eof' | pbcopy
+export EDITOR="nvim"
+
+tmpdir=$(mktemp -dt 'ClipboardHistory.XXXXXXXX')
+mkdir -p "${tmpdir}"
+pbpaste > "${tmpdir}/clipboard"
+"${EDITOR}" "${tmpdir}/clipboard"
+
+if [[ -s "${tmpdir}/clipboard" ]]; then
+    cat "${tmpdir}/clipboard" | perl -pe 'chomp if eof' | pbcopy
 fi
