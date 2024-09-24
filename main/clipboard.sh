@@ -5,6 +5,7 @@ readonly TOOL_DIR="$(dirname $(perl -MCwd=realpath -le 'print realpath shift' "$
 readonly CLIPBOARD_FILE="${HOME}/.local/share/clipboard/history"
 readonly CLIPBOARD_RAW_FILE="${HOME}/.local/share/clipboard/history.raw"
 
+export EDITOR="nvim"
 export BAT_THEME="Dracula"
 
 selected=$(tac "${CLIPBOARD_RAW_FILE}" | \
